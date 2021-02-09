@@ -3,17 +3,11 @@ medali
 ======
 
 
-Add a short description here!
+The MEtaDAta LIbrary is made for reading, writing and modification of the SAR data metadata. 
 
 
 Description
 ===========
 
-A longer description of your project goes here...
+The MEtaDAta LIbrary is made for reading, writing and modification of the SAR data metadata. The metadata is defined using configuration file.
 
-
-Note
-====
-
-This project has been set up using PyScaffold 3.3. For details and usage
-information on PyScaffold see https://pyscaffold.org/.
