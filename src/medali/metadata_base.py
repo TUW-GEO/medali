@@ -120,7 +120,7 @@ class metadata:
                 if meta_dict[key] not in template[key]:
                     suspiccious_keys.append(key)
             elif template[key] in ('integer', 'number'):
-                if not meta_dict[key].isnumeric():
+                if not meta_dict[key].replace('.','',1).isnumeric():
                     suspiccious_keys.append(key)
             elif template[key] == 'boolean':
                 if meta_dict[key] not in ['False', 'True']:
