@@ -3,11 +3,11 @@ medali
 ======
 
 
-The MEtaDAta LIbrary is made for reading, writing and modification of the SAR data metadata. 
+*medali* stands for **ME**\ ta\ **DA**\ ta **LI**\ brary and is responsible for parsing, tagging and interpreting product metadata.
 
 
 Description
 ===========
 
-The MEtaDAta LIbrary is made for reading, writing and modification of the SAR data metadata. The metadata is defined using configuration file.
+The metadata is defined using configuration file.
 
