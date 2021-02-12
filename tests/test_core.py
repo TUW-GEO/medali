@@ -50,9 +50,10 @@ class MetadataConfigReadTest(unittest.TestCase):
             self.assertEqual(metadata._meta.keys(), metadata._ref_meta['Expected_value'].keys())
 
 
-class MetadataConversionCheckTest(unittest.TestCase):
+class MetadataTest(unittest.TestCase):
     """
-    Test reading, checking and converting metadata with respect to the reference metadata.
+    Test reading, checking and converting metadata with respect to the reference metadata
+    and other metadata classes.
 
     """
 
@@ -115,6 +116,26 @@ class MetadataConversionCheckTest(unittest.TestCase):
         self.assertEqual([missing_keys, suspicious_keys, empty_keys], [['string_general'],
                                                                        ['number_type'],
                                                                        ['string_pattern']])
+
+    def test_and(self):
+        """ Tests AND operation between two `MetaData` instances. """
+
+        ref_dtypes = {'datetime_type': 'datetime',
+                      'boolean_type': 'boolean',
+                      'number_type': 'number',
+                      'integer_type': 'integer'}
+        ref_metadata = dict()
+        ref_metadata['Metadata'] = ref_dtypes
+        sec_metadata = MetaData({}, ref_metadata)
+
+        metadata_should = {'datetime_type': '2020-12-12 12:20:10',
+                           'integer_type': '1',
+                           'number_type': '1.2',
+                           'boolean_type': 'False'}
+
+        common_metadata = self.metadata & sec_metadata
+
+        self.assertDictEqual(metadata_should, common_metadata._meta)
 
 
 if __name__ == '__main__':

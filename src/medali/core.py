@@ -59,7 +59,7 @@ class MetaData:
 
         """
         self._meta = {}
-        self._ref_meta = {} if ref_metadata is None else ref_metadata
+        self._ref_meta = {'Metadata': dict(), 'Expected_value': dict()} if ref_metadata is None else ref_metadata
         self._set_input_metadata(metadata)
 
     @classmethod
@@ -147,7 +147,7 @@ class MetaData:
             Metadata value.
 
         """
-        if self._ref_meta:
+        if self._ref_meta['Metadata']:
             if key in self._ref_meta['Metadata'].keys():
                 if self._ref_meta['Metadata'][key] == 'string':
                     if isinstance(value, str):
@@ -281,6 +281,21 @@ class MetaData:
                 print(key)
 
         return missing_keys, suspicious_keys, empty_keys
+
+    def __and__(self, other):
+        """ Finds common metadata attributes among the two metadata classes. """
+        common_keys = self._meta.keys() & other._meta.keys()
+        common_metadata = dict()
+        common_ref_metadata = dict()
+        common_ref_metadata['Metadata'] = dict()
+        common_ref_metadata['Expected_value'] = dict()
+        for common_key in common_keys:
+            common_metadata[common_key] = self[common_key]
+            if common_key in self._ref_meta.keys():
+                common_ref_metadata['Metadata'][common_key] = self._ref_meta['Metadata'][common_key]
+                common_ref_metadata['Expected_value'][common_key] = self._ref_meta['Expected_value'][common_key]
+
+        return MetaData(common_metadata, common_ref_metadata)
 
     def __str__(self):
         """ str : String representation of metadata object. """
