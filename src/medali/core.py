@@ -110,7 +110,7 @@ class MetaData:
         root_dirpath = os.path.dirname(os.path.abspath(__file__))
         cfg_filepath = os.path.join(root_dirpath, "lib", prod_name.lower(), version_id + '.ini')
 
-        return cls.from_file(metadata, cfg_filepath)
+        return cls.from_cfg_file(metadata, cfg_filepath)
 
     def to_pretty_frmt(self):
         """ str : Returns metadata dictionary in a formatted string. """
