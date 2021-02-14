@@ -134,66 +134,36 @@ class MetaData:
             if key not in self._meta:
                 self._meta[key] = 'null'
 
-    def _set_metadata(self, key, value):
+    def _set_metadata(self, attr, value):
         """
         Encodes the given metadata value according to the given metadata attribute and
         stores it/overwrites it.
 
         Parameters
         ----------
-        key : str
+        attr : str
             Metadata attribute.
         value : any
             Metadata value.
 
         """
-        if self._ref_meta['Metadata']:
-            if key in self._ref_meta['Metadata'].keys():
-                if self._ref_meta['Metadata'][key] == 'string':
-                    if isinstance(value, str):
-                        self._meta[key] = value
-                    else:
-                        err_msg = "Metadata information for key '{}' has to be string.".format(key)
-                        raise ValueError(err_msg)
-                elif self._ref_meta['Metadata'][key] == 'boolean':
-                    if isinstance(value, bool):
-                        self._meta[key] = str(value)
-                    else:
-                        err_msg = "Metadata information for key '{}' has to be boolean.".format(key)
-                        raise ValueError(err_msg)
-                elif self._ref_meta['Metadata'][key] == 'integer':
-                    if isinstance(value, int):
-                        self._meta[key] = str(value)
-                    else:
-                        err_msg = "Metadata information for key '{}' has to be integer".format(key)
-                        raise ValueError(err_msg)
-                elif self._ref_meta['Metadata'][key] == 'number':
-                    if isinstance(value, numbers.Number):
-                        self._meta[key] = str(value)
-                    else:
-                        err_msg = "Metadata information for key '{}' has to be number".format(key)
-                        raise ValueError(err_msg)
-                elif self._ref_meta['Metadata'][key] == 'datetime':
-                    if isinstance(value, datetime.datetime):
-                        self._meta[key] = value.strftime("%Y-%m-%d %H:%M:%S")
-                    else:
-                        err_msg = "Metadata information for key '{}' has to be datetime object".format(key)
-                        raise ValueError(err_msg)
-                else:
-                    self._meta[key] = str(value)
-            else:
-                err_msg = "Metadata attribute '{}' is not given in the product reference.".format(key)
-                raise KeyError(err_msg)
-        else:
-            self._meta[key] = str(value)
+        # convert back and forth to execute expected value test with decoded values
+        enc_value = self._encode(attr, value)
+        dec_value = self._decode(attr, enc_value)
+        if not self._is_expected(attr, dec_value):
+            expected_values = self._ref_meta['Expected_value'].get(attr)
+            err_msg = "Metadata value '{}' is not in compliance with '{}'".format(value, expected_values)
+            raise ValueError(err_msg)
 
-    def _get_metadata(self, attribute):
+        self._meta[attr] = self._encode(attr, value)
+
+    def _get_metadata(self, attr):
         """
         Decodes and returns metadata value according to the given attribute.
 
         Parameters
         ----------
-        attribute : str
+        attr : str
             Metadata attribute.
 
         Returns
@@ -202,85 +172,141 @@ class MetaData:
             Decoded metadata value.
 
         """
-        if attribute not in self._meta.keys():
-            err_msg = "Metadata attribute '{}' can not be found.".format(attribute)
+        if attr not in self._meta.keys():
+            err_msg = "Metadata attribute '{}' can not be found.".format(attr)
             raise KeyError(err_msg)
 
-        if self._ref_meta:
-            if self._meta[attribute] == 'null':
-                value = None
-            elif self._ref_meta['Metadata'][attribute] == 'boolean':
-                value = self._meta[attribute] == 'True'
-            elif self._ref_meta['Metadata'][attribute] == 'integer':
-                value = int(self._meta[attribute])
-            elif self._ref_meta['Metadata'][attribute] == 'number':
-                value = float(self._meta[attribute])
-            elif self._ref_meta['Metadata'][attribute] == 'datetime':
-                value = datetime.datetime.strptime(self._meta[attribute], "%Y-%m-%d %H:%M:%S")
-            else:
-                value = self._meta[attribute]
-        else:
-            value = self._meta[attribute]
+        return self._decode(attr, self._meta[attr])
 
-        return value
-
-    def check_metadata(self, metadata):
+    def _is_expected(self, attr, value):
         """
-        Checks if a given metadata dictionary is in compliance with the
-        corresponding reference metadata.
+        Checks if a given metadata value is in compliance with the
+        corresponding expected values in the reference metadata.
 
         Parameters
         ----------
-        metadata : dict
-            Metadata items with their values encoded as strings.
+        attr : str
+            Metadata attribute.
+        value : any
+            Decoded metadata value.
 
         Returns
         ----------
-        missing_keys : list
-            Metadata keys that are missing with respect to the
-            reference metadata.
-        suspicious_keys : list
-            Metadata keys that have suspicious values
-            when compared to rules defined in the reference metadata.
-        empty_keys : list
-            Metadata keys that contain a 'null' value.
+        is_expected : bool
+            True if the given metadata value is expected, else false.
 
         """
+        exp_values = self._ref_meta['Expected_value'].get(attr)
+        is_expected = True
+        if exp_values and value is not None:
+            if isinstance(exp_values, list):
+                if value not in exp_values:
+                    is_expected = False
+            elif exp_values.startswith('pattern'):
+                exp_value = exp_values.replace(', ', ',')
+                pattern = exp_value.split(',')[1]
+                if not re.search(pattern, value):
+                    is_expected = False
 
-        exp_ref_meta = self._ref_meta['Expected_value']
+        return is_expected
 
-        missing_keys = []
-        suspicious_keys = []
-        empty_keys = []
-        for key in exp_ref_meta:
-            if key not in metadata.keys():
-                missing_keys.append(key)
-            elif metadata[key] == 'null':
-                empty_keys.append(key)
-            elif isinstance(exp_ref_meta[key], list):
-                if metadata[key] not in exp_ref_meta[key]:
-                    suspicious_keys.append(key)
-            elif exp_ref_meta[key] in ('integer', 'number'):
-                if not metadata[key].replace('.','',1).isnumeric():
-                    suspicious_keys.append(key)
-            elif exp_ref_meta[key] == 'boolean':
-                if metadata[key] not in ['False', 'True']:
-                    suspicious_keys.append(key)
-            elif exp_ref_meta[key] == 'datetime':
-                if not isdate(metadata[key]):
-                    suspicious_keys.append(key)
-            elif exp_ref_meta[key].startswith('pattern'):
-                value = exp_ref_meta[key].replace(', ', ',')
-                value = value.split(',')
-                pattern = value[1]
-                if not re.search(pattern, metadata[key]):
-                    suspicious_keys.append(key)
-            elif exp_ref_meta[key] == 'string':
-                dummy = 1
+    def _decode(self, attr, value):
+        """
+        Decodes value according to the given attribute.
+
+        Parameters
+        ----------
+        attr : str
+            Metadata attribute.
+        value : str
+            Metadata value.
+
+        Returns
+        -------
+        dec_value : any
+            Decoded metadata value.
+
+        """
+        if self._ref_meta['Metadata']:
+            if attr in self._ref_meta['Metadata'].keys():
+                if value == 'null':
+                    dec_value = None
+                elif self._ref_meta['Metadata'][attr] == 'boolean':
+                    dec_value = value == 'True'
+                elif self._ref_meta['Metadata'][attr] == 'integer':
+                    dec_value = int(value)
+                elif self._ref_meta['Metadata'][attr] == 'number':
+                    dec_value = float(value)
+                elif self._ref_meta['Metadata'][attr] == 'datetime':
+                    dec_value = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+                else:
+                    dec_value = value
             else:
-                print(key)
+                err_msg = "Attribute '{}' is not given in the reference metadata."
+                raise KeyError(err_msg)
+        else:
+            dec_value = value
 
-        return missing_keys, suspicious_keys, empty_keys
+        return dec_value
+
+    def _encode(self, attr, value):
+        """
+        Encodes value according to the given attribute.
+
+        Parameters
+        ----------
+        attr : str
+            Metadata attribute.
+        value : any
+            Metadata value.
+
+        Returns
+        -------
+        enc_value : str
+            Encoded metadata value.
+
+        """
+        err_msg_frmt = "Metadata value for attribute '{}' has to be '{}'."
+        if self._ref_meta['Metadata']:
+            if attr in self._ref_meta['Metadata'].keys():
+                dtype = self._ref_meta['Metadata'][attr]
+                if value is None:
+                    enc_value = 'null'
+                elif isinstance(value, str):  # nothing to encode, but check if the value is convertable
+                    try:
+                        self._decode(attr, value)
+                    except Exception:
+                        raise ValueError(err_msg_frmt.format(attr, dtype))
+                    enc_value = value
+                elif dtype == 'boolean':
+                    if isinstance(value, bool):
+                        enc_value = str(value)
+                    else:
+                        raise ValueError(err_msg_frmt.format(attr, dtype))
+                elif dtype == 'integer':
+                    if isinstance(value, int):
+                        enc_value = str(value)
+                    else:
+                        raise ValueError(err_msg_frmt.format(attr, dtype))
+                elif dtype == 'number':
+                    if isinstance(value, numbers.Number):
+                        enc_value = str(value)
+                    else:
+                        raise ValueError(err_msg_frmt.format(attr, dtype))
+                elif dtype == 'datetime':
+                    if isinstance(value, datetime.datetime):
+                        enc_value = value.strftime("%Y-%m-%d %H:%M:%S")
+                    else:
+                        raise ValueError(err_msg_frmt.format(attr, dtype))
+                else:
+                    enc_value = str(value)
+            else:
+                err_msg = "Attribute '{}' is not given in the reference metadata."
+                raise KeyError(err_msg)
+        else:
+            enc_value = value
+
+        return enc_value
 
     def __and__(self, other):
         """ Finds common metadata attributes among the two metadata classes. """
@@ -290,7 +316,7 @@ class MetaData:
         common_ref_metadata['Metadata'] = dict()
         common_ref_metadata['Expected_value'] = dict()
         for common_key in common_keys:
-            common_metadata[common_key] = self[common_key]
+            common_metadata[common_key] = self._meta[common_key]
             if common_key in self._ref_meta.keys():
                 common_ref_metadata['Metadata'][common_key] = self._ref_meta['Metadata'][common_key]
                 common_ref_metadata['Expected_value'][common_key] = self._ref_meta['Expected_value'][common_key]

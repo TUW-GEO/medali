@@ -47,7 +47,6 @@ class MetadataConfigReadTest(unittest.TestCase):
         for cfg_filepath in cfg_filepaths:
             metadata = MetaData.from_cfg_file({}, cfg_filepath)
             self.assertEqual(metadata._meta.keys(), metadata._ref_meta['Metadata'].keys())
-            self.assertEqual(metadata._meta.keys(), metadata._ref_meta['Expected_value'].keys())
 
 
 class MetadataTest(unittest.TestCase):
@@ -64,7 +63,7 @@ class MetadataTest(unittest.TestCase):
         """
         test_data_dirpath = os.path.join(os.path.dirname(__file__), "test_data")
         cfg_filepath = os.path.join(test_data_dirpath, "cfg_template.ini")
-
+        self.cfg_filepath = cfg_filepath
         self.metadata = MetaData.from_cfg_file({}, cfg_filepath)
         self.metadata['datetime_type'] = datetime.datetime(2020, 12, 12, 12, 20, 10)
         self.metadata['boolean_type'] = False
@@ -100,22 +99,27 @@ class MetadataTest(unittest.TestCase):
         assert self.metadata['string_list'] == 'V3'
         assert self.metadata['string_pattern'] == 'Pattern01'
 
-    def test_metadata_check(self):
+    def test_expected_values(self):
         """
         Tests checking of external metadata.
 
         """
 
-        metadata = {'datetime_type': '2020-12-12 12:20:10',
-                    'string_pattern': 'null',
-                    'integer_type': '1',
-                    'number_type': 'haha',
-                    'string_list': 'V3',
-                    'boolean_type': 'False'}
-        missing_keys, suspicious_keys, empty_keys = self.metadata.check_metadata(metadata)
-        self.assertEqual([missing_keys, suspicious_keys, empty_keys], [['string_general'],
-                                                                       ['number_type'],
-                                                                       ['string_pattern']])
+        metadata = MetaData.from_cfg_file({}, self.cfg_filepath)
+        metadata['datetime_type'] = '2020-12-12 12:20:10'
+        metadata['string_pattern'] = 'null'
+        metadata['integer_type'] = '1'
+        try:
+            metadata['number_type'] = 'haha'
+            assert False
+        except ValueError:
+            assert True
+        try:
+            metadata['string_list'] = 'V5'
+            assert False
+        except ValueError:
+            assert True
+        metadata['boolean_type'] = 'False'
 
     def test_and(self):
         """ Tests AND operation between two `MetaData` instances. """
