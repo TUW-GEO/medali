@@ -116,6 +116,10 @@ class MetaData:
         """ str : Returns metadata dictionary in a formatted string. """
         return pformat(self._meta, indent=4)
 
+    def to_tags(self):
+        """ dict : Returns metadata as a dictionary containing encoded values. """
+        return self._meta
+
     def _set_input_metadata(self, metadata):
         """
         Sets metadata attributes and values according to the given metadata dictionary.
