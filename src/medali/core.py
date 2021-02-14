@@ -305,7 +305,7 @@ class MetaData:
                 else:
                     enc_value = str(value)
             else:
-                err_msg = "Attribute '{}' is not given in the reference metadata."
+                err_msg = "Attribute '{}' is not given in the reference metadata.".format(attr)
                 raise KeyError(err_msg)
         else:
             enc_value = value
