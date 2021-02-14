@@ -321,9 +321,12 @@ class MetaData:
         common_ref_metadata['Expected_value'] = dict()
         for common_key in common_keys:
             common_metadata[common_key] = self._meta[common_key]
-            if common_key in self._ref_meta.keys():
-                common_ref_metadata['Metadata'][common_key] = self._ref_meta['Metadata'][common_key]
-                common_ref_metadata['Expected_value'][common_key] = self._ref_meta['Expected_value'][common_key]
+            ref_meta = self._ref_meta['Metadata'].get(common_key)
+            if ref_meta is not None:
+                common_ref_metadata['Metadata'][common_key] = ref_meta
+            ref_exp_value = self._ref_meta['Expected_value'].get(common_key)
+            if ref_exp_value is not None:
+                common_ref_metadata['Expected_value'][common_key] = ref_exp_value
 
         return MetaData(common_metadata, common_ref_metadata)
 
