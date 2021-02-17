@@ -235,6 +235,8 @@ class MetaData:
             if attr in self._ref_meta['Metadata'].keys():
                 if value == 'none':
                     dec_value = None
+                elif value == 'null':
+                    dec_value = 'null'
                 elif self._ref_meta['Metadata'][attr] == 'boolean':
                     dec_value = value == 'True'
                 elif self._ref_meta['Metadata'][attr] == 'integer':
