@@ -9,16 +9,38 @@ medali
 Description
 ===========
 
-The metadata is defined using configuration file. Configurtion files are stored in the corresponding folder in src/medali/lib named after the metadata version. Current functionality includes:
-  * creating metadata object using the configuration file
-  * setting and encoding (from given dataformat to string) the given metadata attributes
-  * returning and decoding (from string to given dataformat) the given metadata attributes
-  * checking if given metadata meet the criteria given in config file (is within a list of allowed values, contain specified string)
-  
-Including new data types
-========================
+*medali* should be a place to establish version-controlled metadata definitions to guarantee homogeneous reading and writing
+of metadata within the scope of one product. It provides one module, the `core` module containing the class `MetaData`.
+This class offers a simple interface to actual metadata items, which are defined with respect to reference metadata.
+Such reference metadata can either prepared manually as a dictionary or can be set in a configuration file.
+For mature products, the configuration files are stored in the folder in "src/medali/lib" under a product ID and a the metadata version.
 
-Template configuration file can be found in templates folder. Specify all needed tags and their dataformat (currently supported: string, boolean, datatime, integer, number) in the Metadata section of the config file. Expected_value part should contain only those metadata attributes that need to meet some specific criteria (be value within a list or contain a specific pattern). Config files are named according to their version and placed in a subfolder in in src/medali/lib named after the datatype.
+The `Metadata` class offers the following functionality:
+
+  * initialisation via a metadata dictionary (+ optionally a reference metadata dictionary), via a product ID and
+    metadata version combination, or via a configuration file path
+  * setting and encoding (from a given datatype to a string) the given metadata items
+  * returning and decoding (from a string to given datatype) the given metadata items
+  * checking if given metadata meets the criteria defined in the reference metadata (e.g., if the value is within a list of allowed values or if the value contains a specific string, ...)
+
+Installation
+============
+
+*medali* is a very light-weight package and has no dependencies. It can be installed via `pip`:
+
+.. code-block:: bash
+
+    pip install medali
+
+Adding products
+===============
+
+A template configuration file for creating new reference metadata for a product can be found in the "templates" folder.
+The file should be named according to the metadata version and should be placed in a sub-folder in "src/medali/lib" named after the product ID.
+The reference metadata should have two sections:
+
+- "Metadata": all needed tags and their datatype (currently supported: string, boolean, datetime, integer, number)
+- "Expected_value": should list metadata items that need to meet some specific criteria
 
 
 

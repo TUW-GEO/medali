@@ -202,7 +202,7 @@ class MetaData:
         """
         exp_values = self._ref_meta['Expected_value'].get(attr)
         is_expected = True
-        if exp_values and value is not None:
+        if exp_values and (value not in [None, 'null']):
             if isinstance(exp_values, list):
                 if value not in exp_values:
                     is_expected = False
@@ -233,7 +233,7 @@ class MetaData:
         """
         if self._ref_meta['Metadata']:
             if attr in self._ref_meta['Metadata'].keys():
-                if value == 'null':
+                if value == 'none':
                     dec_value = None
                 elif self._ref_meta['Metadata'][attr] == 'boolean':
                     dec_value = value == 'True'
@@ -275,7 +275,7 @@ class MetaData:
             if attr in self._ref_meta['Metadata'].keys():
                 dtype = self._ref_meta['Metadata'][attr]
                 if value is None:
-                    enc_value = 'null'
+                    enc_value = 'none'
                 elif isinstance(value, str):  # nothing to encode, but check if the value is convertable
                     try:
                         self._decode(attr, value)
