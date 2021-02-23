@@ -1,6 +1,16 @@
 ======
 medali
 ======
+.. image:: https://travis-ci.com/TUW-GEO/medali.svg?branch=master
+    :target: https://travis-ci.org/TUW-GEO/medali
+.. image:: https://coveralls.io/repos/github/TUW-GEO/medali/badge.svg?branch=master
+    :target: https://coveralls.io/github/TUW-GEO/medali?branch=master
+.. image:: https://badge.fury.io/py/medali.svg
+    :target: https://badge.fury.io/py/medali
+.. image:: https://readthedocs.org/projects/medali/badge/?version=latest
+    :target: https://medali.readthedocs.io/en/latest/?badge=latest
+.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
+    :target: https://opensource.org/licenses/MIT
 
 
 *medali* stands for **ME**\ ta\ **DA**\ ta **LI**\ brary and is responsible for parsing, tagging and interpreting product metadata. 

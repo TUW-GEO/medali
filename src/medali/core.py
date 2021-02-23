@@ -27,7 +27,7 @@
 
 
 """
-Parsing and modification of the metadata.
+Parsing and modification of metadata.
 
 """
 
