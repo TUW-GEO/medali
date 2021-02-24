@@ -1,20 +1,4 @@
-# Copyright (c) 2021, Vienna University of Technology (TU Wien), Department
-# of Geodesy and Geoinformation (GEO).
-# All rights reserved.
-#
-# All information contained herein is, and remains the property of Vienna
-# University of Technology (TU Wien), Department of Geodesy and Geoinformation
-# (GEO). The intellectual and technical concepts contained herein are
-# proprietary to Vienna University of Technology (TU Wien), Department of
-# Geodesy and Geoinformation (GEO). Dissemination of this information or
-# reproduction of this material is forbidden unless prior written permission
-# is obtained from Vienna University of Technology (TU Wien), Department of
-# Geodesy and Geoinformation (GEO).
-
-"""
-Tests metadata base class.
-
-"""
+""" Tests metadata base class. """
 
 import os
 import glob
@@ -25,16 +9,10 @@ from src.medali.core import MetaData
 
 
 class MetadataConfigReadTest(unittest.TestCase):
-    """
-    Tests reading of all available config files.
-
-    """
+    """ Tests reading of all available config files. """
 
     def test_configs_read(self):
-        """
-        Test reading all available config files and filling null values.
-
-        """
+        """ Test reading all available config files and filling null values. """
         root_dirpath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "medali"))
         lib_path = os.path.join(root_dirpath, "lib")
 
@@ -57,10 +35,7 @@ class MetadataTest(unittest.TestCase):
     """
 
     def setUp(self):
-        """
-        Reads template config metadata file and creates a `MetaData` instance.
-
-        """
+        """ Reads template config metadata file and creates a `MetaData` instance. """
         test_data_dirpath = os.path.join(os.path.dirname(__file__), "test_data")
         cfg_filepath = os.path.join(test_data_dirpath, "cfg_template.ini")
         self.cfg_filepath = cfg_filepath
@@ -74,10 +49,7 @@ class MetadataTest(unittest.TestCase):
         self.metadata['string_pattern'] = 'Pattern01'
 
     def test_set_metadata_attributes(self):
-        """
-        Tests metadata item setting.
-
-        """
+        """ Tests metadata item setting. """
         metadata_should = {'datetime_type': '2020-12-12 12:20:10',
                            'string_pattern': 'Pattern01',
                            'string_general': 'abc',
@@ -100,10 +72,7 @@ class MetadataTest(unittest.TestCase):
         assert self.metadata['string_pattern'] == 'Pattern01'
 
     def test_expected_values(self):
-        """
-        Tests checking of external metadata.
-
-        """
+        """ Tests checking of external metadata. """
 
         metadata = MetaData.from_cfg_file({}, self.cfg_filepath)
         metadata['datetime_type'] = '2020-12-12 12:20:10'

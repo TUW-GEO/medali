@@ -5,6 +5,6 @@ Changelog
 Version 0.1.0
 =============
 
-- first release
-- setup of first basic metadata operations
+- setup of first basic metadata class
+- supports encoding and decoding of attributes
 - support for SAR product metadata
