@@ -2,9 +2,9 @@
 Changelog
 =========
 
-Version 0.1
-===========
+Version 0.1.0
+=============
 
-- Feature A added
-- FIX: nasty bug #1729 fixed
-- add your changes here!
+- setup of first basic metadata class
+- supports encoding and decoding of attributes
+- support for SAR product metadata
