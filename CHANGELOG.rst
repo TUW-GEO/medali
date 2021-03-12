@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.1.1
+=============
+
+- added metadata definition for temporal aggregated products
+
 Version 0.1.0
 =============
 
