@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.1.2
+=============
+
+- added metadata definition for harmonic parameter products
+
 Version 0.1.1
 =============
 
