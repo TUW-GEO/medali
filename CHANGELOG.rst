@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.1.3
+=============
+
+- added metadata definition for flood products
+
 Version 0.1.2
 =============
 
