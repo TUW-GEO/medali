@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.1.5
+=============
+
+- corrected author e-mail address
+
 Version 0.1.4
 =============
 
