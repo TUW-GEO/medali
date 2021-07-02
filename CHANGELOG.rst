@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.1.4
+=============
+
+- updates for new s1_sigma version 1.0
+
 Version 0.1.3
 =============
 
