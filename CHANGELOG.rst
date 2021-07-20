@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.1.6
+=============
+
+- updates for new tempinator version 1.0
+
 Version 0.1.5
 =============
 
@@ -10,7 +15,7 @@ Version 0.1.5
 Version 0.1.4
 =============
 
-- updates for new s1_sigma version 1.0
+- updates for new s1-sigma version 1.0
 
 Version 0.1.3
 =============
