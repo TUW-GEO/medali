@@ -2,10 +2,11 @@
 Changelog
 =========
 
-Version 0.1.6
+Version 0.2.0
 =============
 
 - updates for new tempinator version 1.0
+- restructured "lib" folder structure
 
 Version 0.1.5
 =============
