@@ -67,7 +67,7 @@ class MetaData:
         metadata : dict
             Dictionary containing metadata attributes and decoded values.
         worker_name : str
-            Name of the worker package, e.g. "tempinator".
+            Name of the worker package, e.g. "tempinator", "s1-sigma".
         version_id : str
             Metadata version.
         var_name : str, optional
@@ -81,10 +81,11 @@ class MetaData:
         """
         root_dirpath = os.path.dirname(os.path.abspath(__file__))
         cfg_filename = version_id + '.ini'
+        worker_dirname = worker_name.lower().replace("-", "_")
         if var_name is None:
-            cfg_filepath = os.path.join(root_dirpath, "lib", worker_name.lower(), cfg_filename)
+            cfg_filepath = os.path.join(root_dirpath, "lib", worker_dirname, cfg_filename)
         else:
-            cfg_filepath = os.path.join(root_dirpath, "lib", worker_name.lower(), var_name.lower(), cfg_filename)
+            cfg_filepath = os.path.join(root_dirpath, "lib", worker_dirname, var_name.lower(), cfg_filename)
 
         return cls.from_cfg_file(metadata, cfg_filepath)
 
