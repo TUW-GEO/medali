@@ -4,7 +4,6 @@ import re
 import os
 import numbers
 import datetime
-from dateutil.parser import parse
 from pprint import pformat
 from configparser import ConfigParser
 
@@ -57,7 +56,7 @@ class MetaData:
         return cls(metadata, ref_metadata)
 
     @classmethod
-    def from_product_version(cls, metadata, prod_name, version_id):
+    def from_product_version(cls, metadata, worker_name, version_id, var_name=None):
         """
         Creates a `MetaData` instance from a given metadata dictionary,
         a product name and a version ID.
@@ -66,10 +65,13 @@ class MetaData:
         ----------
         metadata : dict
             Dictionary containing metadata attributes and decoded values.
-        prod_name : str
-            Name of the product, e.g. "SIG0".
+        worker_name : str
+            Name of the worker package, e.g. "tempinator", "s1-sigma".
         version_id : str
             Metadata version.
+        var_name : str, optional
+            Name of the output variable produced by the worker. It defaults to None, i.e. a worker has only output
+            not differing in metadata.
 
         Returns
         -------
@@ -77,7 +79,12 @@ class MetaData:
 
         """
         root_dirpath = os.path.dirname(os.path.abspath(__file__))
-        cfg_filepath = os.path.join(root_dirpath, "lib", prod_name.lower(), version_id + '.ini')
+        cfg_filename = version_id + '.ini'
+        worker_dirname = worker_name.lower().replace("-", "_")
+        if var_name is None:
+            cfg_filepath = os.path.join(root_dirpath, "lib", worker_dirname, cfg_filename)
+        else:
+            cfg_filepath = os.path.join(root_dirpath, "lib", worker_dirname, var_name.lower(), cfg_filename)
 
         return cls.from_cfg_file(metadata, cfg_filepath)
 
