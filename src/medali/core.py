@@ -4,7 +4,6 @@ import re
 import os
 import numbers
 import datetime
-from dateutil.parser import parse
 from pprint import pformat
 from configparser import ConfigParser
 
