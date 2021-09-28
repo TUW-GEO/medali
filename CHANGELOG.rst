@@ -2,10 +2,15 @@
 Changelog
 =========
 
+Version 0.2.1
+=============
+
+- s1dc-flood-mapper updates (v1.0)
+
 Version 0.2.0
 =============
 
-- updates for new tempinator version 1.0
+- updates for new tempinator version (v1.0)
 - restructured "lib" folder structure
 - adapted config file parsing
 
