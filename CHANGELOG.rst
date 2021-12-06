@@ -5,7 +5,9 @@ Changelog
 Version 0.2.2
 =============
 
+- added GitHub PyPi upload on release action
 - new orbit flags
+- new metadata convention for advisory flags
 
 Version 0.2.1
 =============
