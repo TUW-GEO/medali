@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.2.2
+=============
+
+- new orbit flags
+
 Version 0.2.1
 =============
 
