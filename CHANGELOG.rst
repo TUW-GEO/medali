@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.2.3
+=============
+
+- updated for new harmonic-params version 0.2
+
 Version 0.2.2
 =============
 
