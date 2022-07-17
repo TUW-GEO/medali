@@ -6,6 +6,7 @@ Version 0.2.4
 =============
 
 - updates for new s1-sigma version 1.1
+- updates for new tempinator version 1.0
 
 Version 0.2.3
 =============
