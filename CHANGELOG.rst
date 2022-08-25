@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.2.5
+=============
+
+- changes of the scale factor handling for harmonic-params (v0.2)
+
 Version 0.2.4
 =============
 
