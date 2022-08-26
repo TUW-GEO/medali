@@ -2,6 +2,13 @@
 Changelog
 =========
 
+Version 0.2.5
+=============
+
+- updates regarding encoding in harmonic-params (v0.2)
+- updates regarding encoding and thresholds in advisory-flagging (v0.1)
+- updates regarding encoding and post-processing in s1dc-flood-mapper (v0.2)
+
 Version 0.2.4
 =============
 
