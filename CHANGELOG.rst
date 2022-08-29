@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.2.6
+=============
+
+- Fixed advisory flag metadata definition
+
 Version 0.2.5
 =============
 
