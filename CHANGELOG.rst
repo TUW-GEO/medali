@@ -5,7 +5,7 @@ Changelog
 Version 0.2.7
 =============
 
-- Changed data type in advisory flag definition
+- Updated advisory flag metadata definition
 
 Version 0.2.6
 =============
