@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.2.8
+=============
+
+- Updated flood result metadata definition (v1.0)
+
 Version 0.2.7
 =============
 
