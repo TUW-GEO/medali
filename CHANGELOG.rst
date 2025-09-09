@@ -2,6 +2,11 @@
 Changelog
 =========
 
+Version 0.2.9
+=============
+
+- Allowed newer Sentinel-1 satellites in SIG0 and PLIA
+
 Version 0.2.8
 =============
 
