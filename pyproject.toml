@@ -1,0 +1,32 @@
+[project]
+authors = [{ name = "TU Wien GEO MRS group", email = "remote.sensing@geo.tuwien.ac.at" }]
+name = "medali"
+dynamic = ["version"]
+description = "medali is responsible for parsing, tagging and interpreting product metadata."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: POSIX",
+    "Natural Language :: English",
+]
+[project.urls]
+Repository = "https://github.com/TUW-GEO/medali"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+test = [
+    "pytest",
+    "pytest-cov"
+]
+trunk = []

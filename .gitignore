@@ -49,5 +49,4 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
-
-.scripts
+venv

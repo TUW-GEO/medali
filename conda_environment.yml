@@ -1,5 +1,0 @@
-name: medali
-channels:
-    - conda-forge
-dependencies:
-    - python=3.6
